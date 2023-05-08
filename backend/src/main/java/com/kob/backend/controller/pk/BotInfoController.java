@@ -14,7 +14,7 @@ public class BotInfoController {
     public Map<String, String> getBotInfo() {
         HashMap<String, String> bot = new HashMap<>();
 
-        bot.put("name", "apple");
+        bot.put("name", "550W");
         bot.put("rating", "1500");
 
         return bot;
