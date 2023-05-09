@@ -1,6 +1,6 @@
 <template>
-  <NavBar />
-  <router-view />
+    <NavBar />
+    <router-view />
 </template>
 
 <script>
@@ -9,15 +9,15 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap"
 
 export default {
-  components: {
-    NavBar
-  }
+    components: {
+        NavBar
+    }
 }
 </script>
 
 <style>
 body {
-  background-image: url("@/assets/background.webp");
-  background-size: cover;
+    background-image: url("@/assets/images/background.webp");
+    background-size: cover;
 }
 </style>
