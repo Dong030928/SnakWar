@@ -44,6 +44,7 @@ const step = (timeStamp) => {
   }
 
   lastTimeStamp = timeStamp
+
   requestAnimationFrame(step)
 }
 

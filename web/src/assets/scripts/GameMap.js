@@ -1,4 +1,5 @@
 import { AcGameObject } from './AcGameObject' // {} 解构赋值，如果导入文件是 export default 导出则不需要解构，因为全部都导出来了
+import { Snake } from './Snake'
 import { Wall } from './Wall'
 
 export class GameMap extends AcGameObject {
@@ -10,28 +11,15 @@ export class GameMap extends AcGameObject {
     this.L = 0 // 一个单位的长度
 
     this.rows = 13
-    this.cols = 13
+    this.cols = 14 // 列数增加一，保证了两条蛇不会走到同一个格子
 
     this.innerWallsCount = 20
     this.walls = []
-  }
 
-  // 判断图的连通性(左下右上是否连通) --- Floyd Fill 算法
-  checkConnectivity(g, sx, sy, tx, ty) {
-    if (sx == tx && sy == ty) return true
-
-    g[sx][sy] = true
-
-    let dx = [-1, 0, 1, 0],
-      dy = [0, 1, 0, -1]
-    for (let i = 0; i < 4; i++) {
-      let x = sx + dx[i]
-      let y = sy + dy[i]
-
-      if (!g[x][y] && this.checkConnectivity(g, x, y, tx, ty)) return true
-    }
-
-    return false
+    this.snakes = [
+      new Snake({ id: 0, color: '#4876EC', r: this.rows - 2, c: 1 }, this),
+      new Snake({ id: 1, color: '#F94848', r: 1, c: this.cols - 2 }, this),
+    ]
   }
 
   // 创建墙
@@ -59,11 +47,12 @@ export class GameMap extends AcGameObject {
         let r = parseInt(Math.random() * this.rows)
         let c = parseInt(Math.random() * this.cols)
 
-        if (g[r][c] || g[c][r]) continue
+        // 中心对称
+        if (g[r][c] || g[this.rows - 1 - r][this.cols - 1 - c]) continue
         if ((r == this.rows - 2 && c == 1) || (r == 1 && c == this.cols - 2))
           continue
 
-        g[r][c] = g[c][r] = true
+        g[r][c] = g[this.rows - 1 - r][this.cols - 1 - c] = true
         break
       }
     }
@@ -85,10 +74,95 @@ export class GameMap extends AcGameObject {
     return true // 返回 true 图连通
   }
 
+  // 判断图的连通性(左下右上是否连通) --- Floyd Fill 算法
+  checkConnectivity(g, sx, sy, tx, ty) {
+    if (sx == tx && sy == ty) return true
+
+    g[sx][sy] = true
+
+    let dx = [-1, 0, 1, 0],
+      dy = [0, 1, 0, -1]
+    for (let i = 0; i < 4; i++) {
+      let x = sx + dx[i]
+      let y = sy + dy[i]
+
+      if (!g[x][y] && this.checkConnectivity(g, x, y, tx, ty)) return true
+    }
+
+    return false
+  }
+
+  // 判断两条蛇有没有准备好进行下一步操作
+  checkReady() {
+    for (let snake of this.snakes) {
+      if (snake.status !== 'idle') return false
+      if (snake.direction === -1) return false
+    }
+
+    return true
+  }
+
+  // 两条蛇走下一步
+  nextStep() {
+    for (const snake of this.snakes) {
+      snake.nextStep()
+    }
+  }
+
+  // 键入操作
+  addListeningEvents() {
+    this.ctx.canvas.focus()
+
+    const [snake0, snake1] = this.snakes
+    this.ctx.canvas.addEventListener('keydown', (e) => {
+      if (e.key === 'w') snake0.setDirection(0)
+      else if (e.key === 'd') snake0.setDirection(1)
+      else if (e.key === 's') snake0.setDirection(2)
+      else if (e.key === 'a') snake0.setDirection(3)
+      else if (e.key === 'ArrowUp') snake1.setDirection(0)
+      else if (e.key === 'ArrowRight') snake1.setDirection(1)
+      else if (e.key === 'ArrowDown') snake1.setDirection(2)
+      else if (e.key === 'ArrowLeft') snake1.setDirection(3)
+    })
+  }
+
+  // 检查操作是否合法
+  checkValid(nextCell) {
+    // 下一步是否为墙
+    for (const wall of this.walls) {
+      if (nextCell.r === wall.r && nextCell.c === wall.c) {
+        return false
+      }
+    }
+
+    // 是否撞到自己
+    for (const snake of this.snakes) {
+      let k = snake.cells.length
+      if (!snake.checkTailIncreasing()) {
+        // 当蛇尾会前进的时候，蛇尾不要判断 k--
+        k--
+      }
+
+      for (let i = 0; i < k; i++) {
+        if (
+          // 如果下一个格子 与蛇身体任意一个部位重合 返回 false
+          snake.cells[i].r === nextCell.r &&
+          snake.cells[i].c === nextCell.c
+        ) {
+          return false
+        }
+      }
+    }
+
+    return true
+  }
+
   start() {
     for (let i = 0; i < 1000; i++) {
       if (this.create_walls()) break
     }
+
+    this.addListeningEvents()
   }
 
   updateSize() {
@@ -104,10 +178,16 @@ export class GameMap extends AcGameObject {
     this.ctx.canvas.height = this.L * this.rows
   }
 
+  // 更新函数
   update() {
-    // 特别注意：这俩方法顺序不能错
+    // 特别注意：顺序不能错 渲染一定在最后
     // 隐式的在类成员方法里创建了函数 所以构造的时候就调用了这个方法
     this.updateSize() // 更新长度
+
+    if (this.checkReady()) {
+      this.nextStep()
+    }
+
     this.render() // 渲染
   }
 
