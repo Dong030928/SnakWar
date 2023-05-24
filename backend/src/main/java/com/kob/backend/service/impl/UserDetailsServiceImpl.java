@@ -20,9 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
-
         User user = userMapper.selectOne(queryWrapper);
-
         if (user == null) {
             throw new RuntimeException("用户不存在");
         }
