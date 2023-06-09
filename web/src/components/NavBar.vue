@@ -20,6 +20,10 @@
                                      :to="{name: 'record_index'}">对局列表</router-link>
                     </li>
                     <li class="nav-item">
+                        <img src="@/assets/images/主页.png"
+                             width="50px">
+                    </li>
+                    <li class="nav-item">
                         <router-link :class="routeName == 'ranklist_index' ? 'nav-link active' : 'nav-link'"
                                      :to="{name: 'ranklist_index'}">排行榜</router-link>
                     </li>
@@ -45,12 +49,13 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item"
-                                   href="#" @click="logout">退出登录</a></li>
+                                   href="#"
+                                   @click="logout">退出登录</a></li>
                         </ul>
                     </li>
                 </ul>
                 <ul class="navbar-nav"
-                    v-else>
+                    v-else-if="!$store.state.user.pulling_info">
                     <li class="nav-item">
                         <router-link :to="{name: 'user_account_login'}"
                                      class="nav-link"
@@ -71,28 +76,20 @@
     </nav>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue';
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex';
 
+const store = useStore()
+const route = useRoute();
+let routeName = computed(() => route.name)
 
-export default {
-    setup () {
-        const store = useStore()
-        const route = useRoute();
-        let routeName = computed(() => route.name)
 
-        let logout = () => {
-            store.dispatch("logout")
-        }
-
-        return {
-            routeName,
-            logout
-        }
-    }
+let logout = () => {
+    store.dispatch("logout")
 }
+
 </script>
 
 <style scoped>

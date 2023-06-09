@@ -1,5 +1,5 @@
 <template>
-    <ContentField>
+    <ContentField v-if="!$store.state.user.pulling_info">
         <div class="row justify-content-md-center">
             <div class="col-3">
                 <form @submit.prevent="login">
@@ -45,6 +45,22 @@ export default {
         let username = ref('');
         let password = ref('');
         let error_message = ref('');
+
+        const jwtToken = localStorage.getItem("jwt_token");
+        if (jwtToken) {
+            store.commit("updateToken", jwtToken);
+            store.dispatch("getInfo", {
+                success () {
+                    router.push({ name: "home" })
+                    store.commit("updatePollingInfo", false)
+                },
+                error () {
+                    store.commit("updatePollingInfo", false)
+                }
+            })
+        } else {
+            store.commit("updatePollingInfo", false)
+        }
 
         const login = () => {
             error_message.value = "";

@@ -2,7 +2,8 @@
     <!-- 游戏地图组件 -->
     <div ref="parent"
          class="gamemap">
-        <canvas ref="canvas" tabindex="0"></canvas>
+        <canvas ref="canvas"
+                tabindex="0"></canvas>
     </div>
 </template>
 
@@ -18,10 +19,10 @@ export default {
         onMounted(() => {
             new GameMap(canvas.value.getContext('2d'), parent.value)
         })
-    
+
         return {
             parent,
-            canvas
+            canvas,
         }
     }
 }
@@ -32,7 +33,7 @@ export default {
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;    
+    justify-content: center;
     align-items: center;
 }
 </style>
