@@ -14,6 +14,11 @@ import java.util.Map;
 public class InfoServiceImpl implements InfoService {
     @Override
     public Map<String, String> getinfo() {
+        /**
+         * 在 Spring Security 中，已认证的用户信息会被存储在 Authentication 对象中，
+         * Spring Security 会自动将该对象存储在 SecurityContextHolder 中，
+         * 可以通过 SecurityContextHolder.getContext().getAuthentication() 方法获取该对象。
+         */
         UsernamePasswordAuthenticationToken authentication =
                 (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
 
