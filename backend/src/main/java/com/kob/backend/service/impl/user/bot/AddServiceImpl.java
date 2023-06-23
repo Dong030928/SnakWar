@@ -1,5 +1,6 @@
 package com.kob.backend.service.impl.user.bot;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.kob.backend.mapper.BotMapper;
 import com.kob.backend.pojo.Bot;
 import com.kob.backend.pojo.User;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -60,6 +62,14 @@ public class AddServiceImpl implements AddService {
 
         if (content.length() > 10000) {
             map.put("error_message", "代码块长度不能大于10000");
+            return map;
+        }
+
+        QueryWrapper<Bot> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", user.getId()).eq("title", title);
+        List<Bot> botList = botMapper.selectList(queryWrapper);
+        if (botList.size() != 0) {
+            map.put("error_message", "存在相同的Bot标题！");
             return map;
         }
 
