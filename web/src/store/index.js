@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import ModuleUser from './user'
+import ModulePk from './pk'
 
 export default createStore({
   state: {},
@@ -7,6 +8,7 @@ export default createStore({
   mutations: {},
   actions: {},
   modules: {    // 在此处导入模块
-    user: ModuleUser
+    user: ModuleUser,
+    pk: ModulePk
   },
 })
