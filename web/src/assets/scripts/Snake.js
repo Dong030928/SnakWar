@@ -75,9 +75,9 @@ export class Snake extends AcGameObject {
       this.cells[i] = JSON.parse(JSON.stringify(this.cells[i - 1]))
     }
 
-    if (!this.gamemap.checkValid(this.nextCell)) {
-      this.status = 'die'
-    }
+    // if (!this.gamemap.checkValid(this.nextCell)) {
+    //   this.status = 'die'
+    // }
   }
 
   updateMove() {

@@ -20,17 +20,17 @@
                     {{ $store.state.pk.opponent_username }}
                 </div>
             </div>
-            <div class="col-12"
-                 style="text-align: center; margin-top: 12vh;">
-                <div v-if="isMatch"
-                     class="loader">
-                    <span></span><span></span><span></span><span></span><span></span><span></span>
-                    <h1>{{ props.message }}</h1>
-                </div>
-                <button type="button"
-                        class="btn btn-primary btn-lg"
-                        @click="handleMatch">{{ matchBtnInfo }}</button>
+        </div>
+        <div class="col-12"
+             style="text-align: center; margin-top: 12vh;">
+            <div v-if="isMatch"
+                 class="loader">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+                <h1>{{ props.message }}</h1>
             </div>
+            <button type="button"
+                    class="btn btn-primary btn-lg"
+                    @click="handleMatch">{{ matchBtnInfo }}</button>
         </div>
     </div>
 </template>
@@ -71,6 +71,8 @@ let handleMatch = () => {
 .match-ground {
     width: 60vw;
     height: 70vh;
+    min-width: 240px;
+    min-height: 280px;
     margin: 40px auto;
     background-color: rgba(21, 57, 87, 0.5);
 }

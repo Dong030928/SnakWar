@@ -10,11 +10,11 @@ export class Wall extends AcGameObject {
         this.color = "#B37226"
     }
 
-    update() {
+    update () {
         this.render()
     }
 
-    render() {
+    render () {
         const L = this.gamemap.L
         const ctx = this.gamemap.ctx
 
