@@ -16,6 +16,7 @@
     <modules>
         <module>mathcingsystem</module>
         <module>backend</module>
+        <module>botrunningsystem</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>

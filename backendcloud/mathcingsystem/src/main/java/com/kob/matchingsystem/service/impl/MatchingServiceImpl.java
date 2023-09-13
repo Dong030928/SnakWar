@@ -9,9 +9,9 @@ public class MatchingServiceImpl implements MatchingService {
     public static final MatchingPool matchingPool = new MatchingPool();     // 全局只有一个匹配线程，定义为静态
 
     @Override
-    public String addPlayer(Integer userId, Integer rating) {
-        matchingPool.addPlayer(userId, rating);
-        System.out.println("Add Player " + userId + " " + rating);
+    public String addPlayer(Integer userId, Integer rating, Integer botId) {
+        matchingPool.addPlayer(userId, rating, botId);
+        System.out.println("Add Player " + userId + " " + rating + " " + botId);
         return "Add Player Success!";
     }
 

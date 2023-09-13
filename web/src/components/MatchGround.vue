@@ -2,7 +2,7 @@
     <!-- 游戏背景组件 -->
     <div class="match-ground">
         <div class="row">
-            <div class="col-6">
+            <div class="col-4">
                 <div class="user-photo">
                     <img :src="$store.state.user.photo"
                          alt="">
@@ -11,7 +11,19 @@
                     {{ $store.state.user.username }}
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-4">
+                <div class="user-select-bot">
+                    <select v-model="selectBot"
+                            class="form-select">
+                        <option value="-1"
+                                selected>本人出战</option>
+                        <option v-for="bot in bots"
+                                :key="bot.id"
+                                :value="bot.id">{{ bot.title }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-4">
                 <div class="user-photo">
                     <img :src="$store.state.pk.opponent_photo"
                          alt="">
@@ -21,6 +33,7 @@
                 </div>
             </div>
         </div>
+
         <div class="col-12"
              style="text-align: center; margin-top: 12vh;">
             <div v-if="isMatch"
@@ -38,6 +51,7 @@
 <script setup>
 import { ref, defineProps } from 'vue'
 import { useStore } from 'vuex'
+import $ from 'jquery'
 
 const props = defineProps({
     message: {
@@ -50,13 +64,17 @@ const store = useStore();
 
 let isMatch = ref(false)
 let matchBtnInfo = ref('开始匹配')
+let bots = ref([]);
+let selectBot = ref(-1);
 
 let handleMatch = () => {
     isMatch.value = !isMatch.value
     if (isMatch.value) {
         matchBtnInfo.value = "取消匹配"
         store.state.pk.socket.send(JSON.stringify({
-            event: "start-matching"
+            event: "start-matching",
+            bot_id: selectBot.value,
+            
         }))
     } else {
         matchBtnInfo.value = "开始匹配"
@@ -65,6 +83,21 @@ let handleMatch = () => {
         }))
     }
 }
+
+const refreshBots = () => {
+    $.ajax({
+        url: "http://127.0.0.1:3000/user/bot/getlist/",
+        type: "GET",
+        headers: {
+            Authorization: "Bearer " + store.state.user.token,
+        },
+        success (resp) {
+            bots.value = resp;
+        }
+    });
+};
+
+refreshBots()
 </script>
 
 <style scoped>
@@ -82,25 +115,38 @@ let handleMatch = () => {
 }
 
 .user-photo {
-    margin-top: 12vh;
+    margin-top: 18vh;
+    text-align: center;
 }
 
 .user-name {
-    padding-top: 30px;
+    padding-top: 2vh;
     color: white;
     font-size: 24px;
+    font-weight: 600;
+    text-align: center;
 }
 
-.user-photo img {
+.user-photo > img {
     width: 20vh;
     border-radius: 50%;
     border: 3px solid white;
 }
 
+.user-select-bot {
+    padding-top: 10vh;
+}
+
+.user-select-bot > select {
+    width: 60%;
+    margin: 0 auto;
+}
+
+/* 匹配动画CSS */
 .loader {
     height: 40px;
     position: absolute;
-    top: 30%;
+    top: 35vh;
     left: 50%;
     transform: translateX(-50%);
 }

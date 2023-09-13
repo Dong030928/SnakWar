@@ -87,7 +87,7 @@ public class WebSocketServer {
         System.out.println("receive message from client: " + event);
 
         switch (event) {
-            case "start-matching" -> startMatching();
+            case "start-matching" -> startMatching(data.getInteger("bot_id"));
             case "stop-matching" -> stopMatching();
             case "move" -> move(data.getInteger("direction"));
             default -> {}
@@ -119,7 +119,7 @@ public class WebSocketServer {
         }
     }
 
-    public static void startGame(Integer aId, Integer bId) {
+    public static void startGame(Integer aId, Integer aBotId, Integer bId, Integer bBotId) {
         User a = userMapper.selectById(aId);
         User b = userMapper.selectById(bId);
 
@@ -156,12 +156,13 @@ public class WebSocketServer {
         if (users.get(b.getId()) != null) users.get(b.getId()).sendMessage(respB.toJSONString());
     }
 
-    private void startMatching() {
+    private void startMatching(Integer botId) {
         System.out.println(this.user.getId() + " Start Matching!");
 
         MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
         data.add("user_id", this.user.getId().toString());
         data.add("rating", this.user.getRating().toString());
+        data.add("bot_id", botId.toString());
 
         String info = restTemplate.postForObject(WebSocketServer.addPlayerUrl, data, String.class);
 
