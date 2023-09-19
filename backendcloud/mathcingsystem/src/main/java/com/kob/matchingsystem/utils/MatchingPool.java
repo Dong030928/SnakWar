@@ -1,4 +1,4 @@
-package com.kob.matchingsystem.service.impl.utils;
+package com.kob.matchingsystem.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -73,7 +73,9 @@ public class MatchingPool extends Thread {
         data.add("b_id", b.getUserId().toString());
         data.add("b_bot_id", b.getBotId().toString());
 
-        restTemplate.postForObject(startGameUrl, data, String.class);
+        String info = restTemplate.postForObject(startGameUrl, data, String.class);
+
+        System.out.println(startGameUrl + "返回的消息：" + info);
     }
 
     // 尝试匹配线程池里的所有的玩家

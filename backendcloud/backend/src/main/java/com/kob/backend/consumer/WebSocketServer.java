@@ -4,8 +4,10 @@ import com.alibaba.fastjson2.JSONObject;
 import com.kob.backend.config.WebSocketConfig;
 import com.kob.backend.consumer.utils.Game;
 import com.kob.backend.consumer.utils.JwtAuthentication;
+import com.kob.backend.mapper.BotMapper;
 import com.kob.backend.mapper.RecordMapper;
 import com.kob.backend.mapper.UserMapper;
+import com.kob.backend.pojo.Bot;
 import com.kob.backend.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,10 +32,12 @@ public class WebSocketServer {
     private Session session = null;  // 每个连接用 Session 来维护，这个 Session 不是 Http 的 Session，是 WebSocket 包中的
     private static UserMapper userMapper;
     public static RecordMapper recordMapper;
+    public static BotMapper botMapper;
     public static RestTemplate restTemplate;
-    private Game game = null;
+    public Game game = null;
     private static final String addPlayerUrl = "http://127.0.0.1:3001/player/add";
     private static final String removePlayerUrl = "http://127.0.0.1:3001/player/remove";
+
 
     @Autowired      // 通过这种方式，可以保证每次注入的实例不会覆盖之前的实例，并且允许 WebSocketServer 实例通过静态字段userMapper访问被注入的实例。
     private void setUserMapper(UserMapper userMapper) {
@@ -46,6 +50,11 @@ public class WebSocketServer {
     }
 
     @Autowired
+    private void setBotMapper(BotMapper botMapper) {
+        WebSocketServer.botMapper = botMapper;
+    }
+
+    @Autowired
     private void setRestTemplate(RestTemplate restTemplate) {
         WebSocketServer.restTemplate = restTemplate;
     }
@@ -53,7 +62,6 @@ public class WebSocketServer {
     @OnOpen
     public void onOpen(Session session, @PathParam("token") String token) throws IOException {   // 建立连接
         this.session = session;
-        System.out.println("Connected!");
 
         // 通过解析前端访问 PK页面传过来的 token 拿到相应的 user
         Integer userId = JwtAuthentication.getUserId(token);
@@ -65,7 +73,7 @@ public class WebSocketServer {
             this.session.close();
         }
 
-        System.out.println(user.getId());
+        System.out.println(user.getId() + " Connected!");
     }
 
     @OnClose
@@ -74,7 +82,7 @@ public class WebSocketServer {
             users.remove(this.user.getId());
         }
 
-        System.out.println("Disconnected!");
+        System.out.println(this.user.getId() + " Disconnected!");
     }
 
     @OnMessage
@@ -94,14 +102,15 @@ public class WebSocketServer {
         }
     }
 
+    // 分别设置玩家 A 和 B 的移动
     private void move(int direction) {
-        if (game.getPlayerA().getId().equals(user.getId())) {
+        // 只有当选择的 Bot id 为 -1 的时候，才执行人工操作
+        if (game.getPlayerA().getId().equals(user.getId()) && game.getPlayerA().getBotId().equals(-1)) {
             game.setNextStepA(direction);
-        } else if (game.getPlayerB().getId().equals(user.getId())) {
+        } else if (game.getPlayerB().getId().equals(user.getId()) && game.getPlayerB().getBotId().equals(-1)) {
             game.setNextStepB(direction);
         }
     }
-
 
     @OnError
     public void onError(Session session, Throwable error) {
@@ -122,8 +131,10 @@ public class WebSocketServer {
     public static void startGame(Integer aId, Integer aBotId, Integer bId, Integer bBotId) {
         User a = userMapper.selectById(aId);
         User b = userMapper.selectById(bId);
+        Bot botA = botMapper.selectById(aBotId);
+        Bot botB = botMapper.selectById(bBotId);
 
-        Game game = new Game(13, 14, 20, a.getId(), b.getId());
+        Game game = new Game(13, 14, 20, a.getId(), botA, b.getId(), botB);
         game.createGameMap();
 
         if (users.get(a.getId()) != null) users.get(a.getId()).game = game;
@@ -157,8 +168,6 @@ public class WebSocketServer {
     }
 
     private void startMatching(Integer botId) {
-        System.out.println(this.user.getId() + " Start Matching!");
-
         MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
         data.add("user_id", this.user.getId().toString());
         data.add("rating", this.user.getRating().toString());
@@ -166,7 +175,7 @@ public class WebSocketServer {
 
         String info = restTemplate.postForObject(WebSocketServer.addPlayerUrl, data, String.class);
 
-        System.out.println("添加路由返回信息" + info);
+        System.out.println(info);
     }
 
     private void stopMatching() {

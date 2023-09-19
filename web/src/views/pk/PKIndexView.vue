@@ -20,6 +20,7 @@ export default {
     },
     setup () {
         const store = useStore();
+
         let socket = null;
         let socketUrl = `ws://127.0.0.1:3000/websocket/${store.state.user.token}`;
 
@@ -39,7 +40,7 @@ export default {
             }
 
             socket.onmessage = (msg) => {
-                const data = JSON.parse(msg.data); 
+                const data = JSON.parse(msg.data);
 
                 if (data.event === "match success") {
                     console.log("匹配成功！");
@@ -51,10 +52,10 @@ export default {
                         photo: data.opponent_photo
                     });
 
-                    setTimeout(() => {
+                    setTimeout(() => {  // 延时太长会传空参
                         // store.state.pk.status = "playing"
                         store.commit("updateStatus", "playing")
-                    }, 2000)
+                    }, 500)
 
                     store.commit("updateGame", data.game)
                 } else if (data.event === "move") {
@@ -84,8 +85,6 @@ export default {
 
                     matchingInfo.value = "正在匹配"
                 }
-
-                // console.log(data);
             }
 
             socket.onclose = () => {
@@ -96,6 +95,7 @@ export default {
         onUnmounted(() => {
             socket.close();
             store.commit("updateStatus", "matching");   // 当从PK页面切出去后，判输
+            store.commit("updateLoser", "none")
         })
 
         return {

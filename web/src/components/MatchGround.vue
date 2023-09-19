@@ -74,7 +74,6 @@ let handleMatch = () => {
         store.state.pk.socket.send(JSON.stringify({
             event: "start-matching",
             bot_id: selectBot.value,
-            
         }))
     } else {
         matchBtnInfo.value = "开始匹配"
