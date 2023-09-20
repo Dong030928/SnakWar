@@ -8,6 +8,7 @@ export default {
         token: '',
         is_login: false,
         pulling_info: true,
+        rating: '----'
     },
     getters: {}, // 读取 state 数据，但不不能修改
     mutations: {
@@ -16,6 +17,7 @@ export default {
             state.id = user.id
             state.username = user.username
             state.photo = user.photo
+            state.rating = user.rating
             state.is_login = user.is_login
         },
         updateToken (state, token) {

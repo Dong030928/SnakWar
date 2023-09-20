@@ -29,7 +29,8 @@ export default {
         onMounted(() => {
             store.commit("updateOpponent", {
                 username: "",
-                photo: "https://cdn.acwing.com/media/article/image/2022/08/09/1_1db2488f17-anonymous.png"
+                photo: "https://cdn.acwing.com/media/article/image/2022/08/09/1_1db2488f17-anonymous.png",
+                rating: "----"
             })
 
             socket = new WebSocket(socketUrl);
@@ -49,7 +50,8 @@ export default {
 
                     store.commit("updateOpponent", {
                         username: data.opponent_username,
-                        photo: data.opponent_photo
+                        photo: data.opponent_photo,
+                        rating: data.opponent_rating
                     });
 
                     setTimeout(() => {  // 延时太长会传空参

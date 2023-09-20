@@ -4,6 +4,7 @@
         <div class="row">
             <div class="col-4">
                 <div class="user-photo">
+                    <p class="rating">天梯积分：<i style="color: orange;">{{ $store.state.user.rating }}</i></p>
                     <img :src="$store.state.user.photo"
                          alt="">
                 </div>
@@ -25,6 +26,7 @@
             </div>
             <div class="col-4">
                 <div class="user-photo">
+                    <p class="rating">天梯积分：<i style="color: orange;">{{ $store.state.pk.opponent_rating }}</i></p>
                     <img :src="$store.state.pk.opponent_photo"
                          alt="">
                 </div>
@@ -145,7 +147,7 @@ refreshBots()
 .loader {
     height: 40px;
     position: absolute;
-    top: 35vh;
+    top: 40vh;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -207,5 +209,10 @@ refreshBots()
         background-color: aqua;
         transform: translateY(0);
     }
+}
+
+.rating {
+    font-size: 20px;
+    font-weight: 600;
 }
 </style>

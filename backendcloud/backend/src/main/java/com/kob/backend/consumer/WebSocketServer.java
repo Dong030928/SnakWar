@@ -30,7 +30,7 @@ public class WebSocketServer {
     private User user;
     public static final ConcurrentHashMap<Integer, WebSocketServer> users = new ConcurrentHashMap<>();  // 维护两个用户对应的链接
     private Session session = null;  // 每个连接用 Session 来维护，这个 Session 不是 Http 的 Session，是 WebSocket 包中的
-    private static UserMapper userMapper;
+    public static UserMapper userMapper;
     public static RecordMapper recordMapper;
     public static BotMapper botMapper;
     public static RestTemplate restTemplate;
@@ -156,6 +156,7 @@ public class WebSocketServer {
         respA.put("event", "match success");
         respA.put("opponent_username", b.getUsername());
         respA.put("opponent_photo", b.getPhoto());
+        respA.put("opponent_rating", b.getRating());
         respA.put("game", respGame);
         if (users.get(a.getId()) != null) users.get(a.getId()).sendMessage(respA.toJSONString());     // 向A通知匹配成功，同时也要向B通知匹配成功
 
@@ -163,6 +164,7 @@ public class WebSocketServer {
         respB.put("event", "match success");
         respB.put("opponent_username", a.getUsername());
         respB.put("opponent_photo", a.getPhoto());
+        respB.put("opponent_rating", a.getRating());
         respB.put("game", respGame);
         if (users.get(b.getId()) != null) users.get(b.getId()).sendMessage(respB.toJSONString());
     }

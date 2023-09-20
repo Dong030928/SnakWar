@@ -4,6 +4,7 @@ export default {
         socket: null,
         opponent_username: "",
         opponent_photo: "",
+        opponent_rating: "",
         game_map: null,
         a_id: 0,
         a_sx: 0,
@@ -22,6 +23,7 @@ export default {
         updateOpponent (state, opponent) {
             state.opponent_username = opponent.username;
             state.opponent_photo = opponent.photo;
+            state.opponent_rating = opponent.rating;
         },
         updateStatus (state, status) {
             state.status = status
