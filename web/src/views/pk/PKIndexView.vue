@@ -19,10 +19,12 @@ export default {
         ResultBoard,
     },
     setup () {
-        const store = useStore();
+        const store = useStore()
+
+        store.commit("updateIsRecord", false)
 
         let socket = null;
-        let socketUrl = `ws://127.0.0.1:3000/websocket/${store.state.user.token}`;
+        let socketUrl = `ws://127.0.0.1:3000/websocket/${store.state.user.token}`
 
         let matchingInfo = ref("正在匹配")
 

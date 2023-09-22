@@ -101,6 +101,6 @@ updateUserRating()
 .result-board .result-board-btn {
     position: relative;
     text-align: center;
-    padding-top: 1vh;
+    margin-top: 3vh;
 }
 </style>

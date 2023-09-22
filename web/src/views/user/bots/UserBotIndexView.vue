@@ -81,7 +81,8 @@
                         </div>
 
                         <div class="card-body">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-striped table-hover"
+                                   style="text-align: center;">
                                 <thead>
                                     <tr>
                                         <th>名称</th>
