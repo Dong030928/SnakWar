@@ -34,20 +34,67 @@
                 </tr>
             </tbody>
         </table>
+
+        <!-- 页码组件 -->
+
+        <div class="box">
+            <p class="pagesize">共 {{ parseInt(Math.ceil(totalRecords / 10)) }} 页</p>
+            <nav>
+                <ul class="pagination"
+                    style="float: right">
+                    <li class="page-item"
+                        @click="changePage(-2)">
+                        <a class="page-link"
+                           href="#"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li :class="'page-item ' + item.isActive"
+                        v-for="(item, index) in pages"
+                        :key="index"
+                        @click="changePage(item.number)">
+                        <a class="page-link"
+                           href="#">{{ item.number }}</a>
+                    </li>
+                    <li class="page-item"
+                        @click="changePage(-1)">
+                        <a class="page-link"
+                           href="#"
+                           aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
     </ContentField>
 </template>
 
 <script setup>
-import ContentField from '@/components/ContentField'
-import { useStore } from 'vuex'
-import $ from 'jquery'
+import ContentField from '@/components/ContentField';
+import { useStore } from 'vuex';
+import $ from 'jquery';
 import { onMounted, ref } from 'vue';
 import router from '@/router';
 
-let store = useStore()
+let store = useStore();
 let currentPage = 1;
-let records = ref([])
-let totalRecords = ref(0)
+let currentPageSize = ref(10);
+let records = ref([]);
+let totalRecords = ref(0);
+let pages = ref([]);
+
+let changePage = (page) => {
+    if (page === -2) page = currentPage - 1;
+    else if (page === -1) page = currentPage + 1;
+
+    let maxPages = parseInt(Math.ceil(totalRecords.value / 10));
+    if (page >= 1 && page <= maxPages) {
+        pullPage(page)
+    }
+}
 
 let pullPage = (page) => {
     currentPage = page
@@ -64,11 +111,28 @@ let pullPage = (page) => {
             console.log(resp);
             records.value = resp.records
             totalRecords.value = resp.records_count
+            currentPageSize.value = records.value.length
+            updatePages()
         },
         error (resp) {
             console.log(resp);
         }
     })
+}
+
+// 确定页码当前展示多少个
+let updatePages = () => {
+    let maxPages = parseInt(Math.ceil(totalRecords.value / 10));
+    let newPages = [];
+    for (let i = currentPage - 2; i <= currentPage + 2; i++) {
+        if (i > 0 && i <= maxPages) {
+            newPages.push({
+                number: i,
+                isActive: i === currentPage ? "active" : ""
+            });
+        }
+    }
+    pages.value = newPages;
 }
 
 onMounted(() => {
@@ -131,5 +195,17 @@ let openRecordContent = (id) => {
     width: 4vh;
     border-radius: 50%;
     margin-right: 10px;
+}
+
+.box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagesize {
+    margin-right: 20px;
+    font-size: 13px;
+    color: rgb(153, 162, 170);
 }
 </style>
