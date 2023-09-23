@@ -166,8 +166,9 @@
                                     </tr>
                                 </tbody>
                             </table>
-
+                            <span class="text">Bot 创建数量 {{ currentCount }} / 10</span>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -248,6 +249,7 @@ export default {
 
         const store = useStore();
         let bots = ref([]);
+        let currentCount = ref();
 
         const botadd = reactive({
             title: "",
@@ -265,6 +267,7 @@ export default {
                 },
                 success (resp) {
                     bots.value = resp;
+                    currentCount.value = bots.value.length;
                 }
             });
         };
@@ -359,6 +362,7 @@ export default {
 
         return {
             bots,
+            currentCount,
             botadd,
             add_bot,
             update_bot,
@@ -377,5 +381,12 @@ export default {
 div.error-message {
     color: red;
     margin-right: 20px;
+}
+
+.text {
+    float: right;
+    margin: 10px;
+    font-size: 16px;
+    color: rgb(153, 162, 170);
 }
 </style>

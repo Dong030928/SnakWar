@@ -73,6 +73,13 @@ public class AddServiceImpl implements AddService {
             return map;
         }
 
+        queryWrapper.clear();
+        queryWrapper.eq("user_id", user.getId());
+        if (botMapper.selectCount(queryWrapper) >= 10) {
+            map.put("error_message", "Bot创建数量已达上限！");
+            return map;
+        }
+
         Date now = new Date();
         Bot bot = new Bot(null, user.getId(), title, description, content, now, now);
 
