@@ -47,7 +47,7 @@ const routes = [
         name: 'ranklist_index',
         component: RanklistIndexView,
         meta: {
-            requestAuth: true,
+            requestAuth: false,
         },
     },
     {

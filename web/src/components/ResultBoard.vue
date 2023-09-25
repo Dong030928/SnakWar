@@ -48,7 +48,7 @@ const restart = () => {
 
 const updateUserRating = () => {
     $.ajax({
-        url: "http://127.0.0.1:3000/user/account/info/",
+        url: "https://app6039.acapp.acwing.com.cn/api/user/account/info/",
         type: "GET",
         headers: {
             Authorization: "Bearer " + store.state.user.token,
