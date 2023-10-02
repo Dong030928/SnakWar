@@ -18,7 +18,6 @@
         </div>
         <div class="result-board-btn">
             <button type="button"
-                    class="btn btn-warning btn-lg"
                     @click="restart">
                 再来一局
             </button>
@@ -73,8 +72,11 @@ updateUserRating()
     background-color: rgba(50, 50, 50, 0.5);
     border-radius: 50px;
     position: absolute;
-    top: 30vh;
-    left: 35vw;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
     box-shadow: 5px 5px 5px 3px;
 }
 
@@ -102,5 +104,14 @@ updateUserRating()
     position: relative;
     text-align: center;
     margin-top: 3vh;
+}
+
+button {
+    font-size: 20px;
+    border-radius: 5px;
+    background-color: #ffc310;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
 }
 </style>

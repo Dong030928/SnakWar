@@ -1,14 +1,17 @@
 <template>
-    <PlayGround v-if="$store.state.pk.status === 'playing'" />
-    <MatchGround v-else-if="$store.state.pk.status === 'matching'"
-                 :message="matchingInfo" />
-    <ResultBoard v-if="$store.state.pk.loser != 'none'" />
+    <ContentFieldVue>
+        <PlayGround v-if="$store.state.pk.status === 'playing'" />
+        <MatchGround v-else-if="$store.state.pk.status === 'matching'"
+                     :message="matchingInfo" />
+        <ResultBoard v-if="$store.state.pk.loser != 'none'" />
+    </ContentFieldVue>
 </template>
 
 <script>
 import PlayGround from '@/components/PlayGround'
 import MatchGround from '@/components/MatchGround'
 import ResultBoard from '@/components/ResultBoard'
+import ContentFieldVue from '@/components/ContentField.vue';
 import { useStore } from 'vuex';
 import { onMounted, onUnmounted, ref } from 'vue';
 
@@ -17,6 +20,7 @@ export default {
         PlayGround,
         MatchGround,
         ResultBoard,
+        ContentFieldVue
     },
     setup () {
         const store = useStore()

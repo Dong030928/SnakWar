@@ -23,7 +23,7 @@
     </div>
     <div class="box">
         <button v-if="$store.state.record.is_record"
-                class="btn btn-secondary btn-lg"
+                class="back-btn"
                 @click="backToRankList">返回对战列表</button>
     </div>
 
@@ -41,6 +41,7 @@ let canvas = ref(null)
 console.log(store.state.user.id, store.state.pk.a_id, store.state.pk.b_id);
 
 const backToRankList = () => {
+    store.commit("updateRouterName", "record")
 }
 
 onMounted(() => {
@@ -102,5 +103,22 @@ button {
     color: rgb(0, 0, 0);
     text-shadow: 0 0 10px red, 0 0 20px orange, 0 0 30px yellow, 0 0 40px green,
         0 0 50px blue, 0 0 60px purple;
+}
+
+.back-btn {
+    position: absolute;
+    width: 80px;
+    height: 40px;
+    font-size: 24px;
+    font-style: italic;
+    font-weight: 600;
+    color: white;
+    background-color: grey;
+    border: 3px solid white;
+    text-align: center;
+    right: 2vh;
+    bottom: 2vh;
+    cursor: pointer;
+    user-select: none;
 }
 </style>

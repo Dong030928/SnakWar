@@ -1,74 +1,77 @@
 <template>
     <ContentField>
-        <table class="table table-success table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">玩家A</th>
-                    <th scope="col">玩家B</th>
-                    <th scope="col">对战结果</th>
-                    <th scope="col">对战时间</th>
-                    <th scope="col">操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item, index) in records"
-                    :key="index">
-                    <td>
-                        <img :src="item.a_photo"
-                             alt=""
-                             class="record-user-photo">
-                        <span class="record-user-username">{{ item.a_username }}</span>
-                    </td>
-                    <td>
-                        <img :src="item.b_photo"
-                             alt=""
-                             class="record-user-photo">
-                        <span class="record-user-username">{{ item.b_username }}</span>
-                    </td>
-                    <td>{{ item.result }}</td>
-                    <td>{{ item.record.createTime }}</td>
-                    <td>
-                        <button @click="openRecordContent(item.record.id)"
-                                class="btn btn-danger btn-sm">查看回放</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="game-table">
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">玩家A</th>
+                            <th scope="col">玩家B</th>
+                            <th scope="col">对战结果</th>
+                            <th scope="col">对战时间</th>
+                            <th scope="col">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, index) in records"
+                            :key="index">
+                            <td class="game-table-username">
+                                <img :src="item.a_photo"
+                                     alt=""
+                                     class="record-user-photo">
+                                <span class="record-user-username">{{ item.a_username }}</span>
+                            </td>
+                            <td>
+                                <img :src="item.b_photo"
+                                     alt=""
+                                     class="record-user-photo">
+                                <span class="record-user-username">{{ item.b_username }}</span>
+                            </td>
+                            <td>{{ item.result }}</td>
+                            <td>{{ item.record.createTime }}</td>
+                            <td>
+                                <button @click="openRecordContent(item.record.id)"
+                                        class="btn btn-danger btn-sm">查看回放</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-        <!-- 页码组件 -->
+                <!-- 页码组件 -->
 
-        <div class="box">
-            <p class="pagesize">共 {{ parseInt(Math.ceil(totalRecords / 10)) }} 页</p>
-            <nav>
-                <ul class="pagination"
-                    style="float: right">
-                    <li class="page-item"
-                        @click="changePage(-2)">
-                        <a class="page-link"
-                           href="#"
-                           aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li :class="'page-item ' + item.isActive"
-                        v-for="(item, index) in pages"
-                        :key="index"
-                        @click="changePage(item.number)">
-                        <a class="page-link"
-                           href="#">{{ item.number }}</a>
-                    </li>
-                    <li class="page-item"
-                        @click="changePage(-1)">
-                        <a class="page-link"
-                           href="#"
-                           aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+                <div class="box">
+                    <p class="pagesize">共 {{ parseInt(Math.ceil(totalRecords / 10)) }} 页</p>
+                    <nav>
+                        <ul class="pagination"
+                            style="float: right; padding: 0">
+                            <li class="page-item"
+                                @click="changePage(-2)">
+                                <a class="page-link"
+                                   href="#"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li :class="'page-item ' + item.isActive"
+                                v-for="(item, index) in pages"
+                                :key="index"
+                                @click="changePage(item.number)">
+                                <a class="page-link"
+                                   href="#">{{ item.number }}</a>
+                            </li>
+                            <li class="page-item"
+                                @click="changePage(-1)">
+                                <a class="page-link"
+                                   href="#"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </div>
-
     </ContentField>
 </template>
 
@@ -172,6 +175,7 @@ let openRecordContent = (id) => {
                 b_steps: record.record.bsteps,
             })
             store.commit("updateRecordLoser", record.record.loser)
+            store.commit("updateRouterName", "record_content")
             break;
         }
     }
@@ -179,15 +183,59 @@ let openRecordContent = (id) => {
 </script>
 
 <style scoped>
-* {
-    text-align: center;
-    vertical-align: center;
-}
-
-.record-user-photo {
+img.record-user-photo {
     width: 4vh;
     border-radius: 50%;
-    margin-right: 10px;
+}
+div.game-table {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+div.game-table table {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+}
+.game-table-username {
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 7.5vw;
+}
+td {
+    width: 7.5vw;
+}
+th {
+    text-align: center;
+}
+.page-item {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: white;
+    border: 1px solid #dee2e6;
+    cursor: pointer;
+    user-select: none;
+}
+.page-item:hover {
+    background-color: #e9ecef;
+}
+.page-item.active {
+    background-color: #0d6efd;
+}
+.page-item.active > a {
+    color: white;
+}
+.page-link {
+    color: #0d6efd;
+    text-decoration: none;
+}
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .box {
@@ -197,7 +245,7 @@ let openRecordContent = (id) => {
 }
 
 .pagesize {
-    margin-right: 20px;
+    margin-right: 30px;
     font-size: 13px;
     color: rgb(153, 162, 170);
 }

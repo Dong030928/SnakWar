@@ -1,7 +1,9 @@
 <template>
     <!-- 游戏背景组件 -->
-    <div class="playground">
-        <GameMap />
+    <div class="content-field">
+        <div class="playground">
+            <GameMap />
+        </div>
     </div>
 </template>
 
@@ -17,8 +19,15 @@ export default {
 
 <style scoped>
 .playground {
-    width: 60vw;
-    height: 70vh;
-    margin: 40px auto;
+    width: 40vw;
+    height: 50vh;
+}
+
+.content-field {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
 </style>
