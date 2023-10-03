@@ -27,6 +27,12 @@ public class MatchingPool extends Thread {
         lock.lock();
 
         try {
+            for (Player player: players) {
+                if (player.getUserId().equals(userId)) {
+                    players.remove(player);
+                    break;
+                }
+            }
             players.add(new Player(userId, rating, botId, 0));
         } finally {
             lock.unlock();
