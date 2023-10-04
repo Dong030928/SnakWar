@@ -79,6 +79,7 @@ let handleMatch = () => {
     isMatch.value = !isMatch.value
     if (isMatch.value) {
         matchBtnInfo.value = "取消匹配"
+        console.log(store.state.pk.socket);
         store.state.pk.socket.send(JSON.stringify({
             event: "start-matching",
             bot_id: selectBot.value,

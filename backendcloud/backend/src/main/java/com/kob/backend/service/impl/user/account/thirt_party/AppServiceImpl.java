@@ -23,8 +23,8 @@ public class AppServiceImpl implements AppService {
     private static final String appId = "6039";
     private static final String appSecret = "d0202de1b7af4ac3b10da8cbb7437125";
     private static final String redirectUri = "https://app6039.acapp.acwing.com.cn/api/user/account/third_party/app/receive_code";     // 回调链接，第三方服务器接收到用户确认授权后告诉 app 端的接口地址
-    private static final String applyAccessTokenURL = "https://www.acwing.com/third_party/api/oauth2/access_token";
-    private static final String applyUserInfoURL = "https://www.acwing.com/third_party/api/meta/identity/getinfo";
+    private static final String applyAccessTokenURL = "https://www.acwing.com/third_party/api/oauth2/access_token/";
+    private static final String applyUserInfoURL = "https://www.acwing.com/third_party/api/meta/identity/getinfo/";
 
     private static final Random random = new Random();
 
@@ -101,9 +101,19 @@ public class AppServiceImpl implements AppService {
 
         getString = HttpClientUtil.get(applyUserInfoURL, nameValuePairs);
         if (getString == null) return resp;
+
         getResp = JSONObject.parseObject(getString);
         String username = getResp.getString("username");
         String photo = getResp.getString("photo");
+        if (username == null || photo == null) return resp;
+
+        for (int i = 0; i < 100; i ++ ) {
+            QueryWrapper<User> usernameQueryWrapper = new QueryWrapper<>();
+            usernameQueryWrapper.eq("username", username);
+            if (userMapper.selectList(usernameQueryWrapper).isEmpty()) break;
+            username += (char)(random.nextInt(10) + '0');
+            if (i == 99) return resp;
+        }
 
         User user = new User(null, username, null, photo, 1500, openid);
         userMapper.insert(user);

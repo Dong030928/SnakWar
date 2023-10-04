@@ -17,25 +17,40 @@ import RecordIndexView from './views/record/RecordIndexView.vue'
 import RecordContentView from './views/record/RecordContentView.vue'
 import RanklistIndexView from "@/views/ranklist/RanklistIndexView.vue"
 import UserBotIndexView from './views/user/bots/UserBotIndexView.vue'
+import $ from 'jquery'
 
 const store = useStore()
 
-const jwtToken = localStorage.getItem("jwt_token");
-
-if (jwtToken) {
-    store.commit("updateToken", jwtToken);
-    store.dispatch("getInfo", {
-        success () {
-            store.commit("updatePollingInfo", false)
-        },
-        error () {
-            store.commit("updatePollingInfo", false)
+$.ajax({
+    url: "https://app6039.acapp.acwing.com.cn/api/user/account/third_party/app/apply_code",
+    type: "GET",
+    success (resp) {
+        if (resp.result === "success") {
+            store.state.user.AcWingOS.api.oauth2.authorize(
+                resp.appid,
+                resp.redirect_uri,
+                resp.scope,
+                resp.state,
+                resp => {   // 此回调函数的参数为 receiveCode 函数接口所返回JSON格式里各项的参数，即 result，若成功就有 jwt_token，否则没有
+                    if (resp.result === "success") {
+                        store.commit("updateToken", resp.jwt_token)
+                        store.dispatch("getInfo", {
+                            success () {
+                                store.commit("updatePollingInfo", false)
+                            },
+                            error () {
+                                store.commit("updatePollingInfo", false)
+                            }
+                        })
+                    } else {
+                        store.state.user.AcWingOS.api.window.close()
+                    }
+                });
+        } else {
+            store.state.user.AcWingOS.api.window.close()
         }
-    })
-} else {
-    store.commit("updatePollingInfo", false)
-}
-
+    }
+})
 </script>
 
 <style scoped>
