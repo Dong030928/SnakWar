@@ -1,7 +1,6 @@
 package com.kob.backend.controller.user.account.third_party;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.kob.backend.service.user.account.third_party.AppService;
 import com.kob.backend.service.user.account.third_party.WebService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
