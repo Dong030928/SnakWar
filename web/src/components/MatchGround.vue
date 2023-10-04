@@ -36,17 +36,23 @@
             </div>
         </div>
 
-        <div class="col-12"
-             style="text-align: center; margin-top: 12vh;">
-            <div v-if="isMatch"
-                 class="loader">
-                <span></span><span></span><span></span><span></span><span></span><span></span>
-                <h1>{{ props.message }}</h1>
+        <div class="match-board"
+             style="text-align: center; margin-top: 10vh;">
+            <div :class="isMatch ? 'loader-board' : 'hide-board'">
+                <div v-if="isMatch"
+                     class="loader">
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                    <h1>{{ props.message }}</h1>
+                </div>
             </div>
+        </div>
+
+        <div class="col-12 start-match-button">
             <button type="button"
                     class="btn btn-primary btn-lg"
                     @click="handleMatch">{{ matchBtnInfo }}</button>
         </div>
+
     </div>
 </template>
 
@@ -103,12 +109,15 @@ refreshBots()
 
 <style scoped>
 .match-ground {
-    width: 60vw;
-    height: 70vh;
+    width: 60%;
+    height: 70%;
     min-width: 240px;
     min-height: 280px;
     margin: 40px auto;
     background-color: rgba(21, 57, 87, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .row .col-6 {
@@ -143,13 +152,40 @@ refreshBots()
     margin: 0 auto;
 }
 
+.match-board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    transform: translateY(-10vh);
+}
+
+.start-match-button {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.loader-board {
+    position: relative;
+    margin-top: -250px;
+    height: 250px;
+    width: 444.4px;
+    background-image: url("@/assets/images/match-ground-bg.jpg");
+    background-size: cover;
+    border-radius: 15%;
+    box-shadow: 5px 5px 5px 3px;
+}
+
 /* 匹配动画CSS */
 .loader {
-    height: 40px;
     position: absolute;
-    top: 40vh;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 125px;
+    left: 222.2px;
+    transform: translateX(-50%) translateY(-50%);
+    font-style: italic;
+    text-shadow: 0 0 10px red, 0 0 20px orange, 0 0 30px yellow, 0 0 40px green,
+        0 0 50px blue, 0 0 60px purple;
 }
 
 .loader span {
