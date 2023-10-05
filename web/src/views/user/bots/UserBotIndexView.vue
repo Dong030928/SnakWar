@@ -121,7 +121,8 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="mb-3">
-                                                                <label for="update-bot-title"
+                                                                <label style="float: left;"
+                                                                       for="update-bot-title"
                                                                        class="form-label">名称</label>
                                                                 <input type="text"
                                                                        v-model="bot.title"
@@ -130,7 +131,8 @@
                                                                        placeholder="请输入Bot名称">
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label for="update-bot-description"
+                                                                <label style="float: left;"
+                                                                       for="update-bot-description"
                                                                        class="form-label">简介</label>
                                                                 <textarea v-model="bot.description"
                                                                           class="form-control"
@@ -138,7 +140,8 @@
                                                                           rows="3"
                                                                           placeholder="请输入Bot简介"></textarea>
                                                             </div>
-                                                            <div class="mb-3">
+                                                            <div style="text-align: left"
+                                                                 class="mb-3">
                                                                 <label for="add-bot-code"
                                                                        class="form-label">代码</label>
                                                                 <VAceEditor v-model:value="bot.content"

@@ -105,10 +105,14 @@ public class WebSocketServer {
     // 分别设置玩家 A 和 B 的移动
     private void move(int direction) {
         // 只有当选择的 Bot id 为 -1 的时候，才执行人工操作
-        if (game.getPlayerA().getId().equals(user.getId()) && game.getPlayerA().getBotId().equals(-1)) {
-            game.setNextStepA(direction);
-        } else if (game.getPlayerB().getId().equals(user.getId()) && game.getPlayerB().getBotId().equals(-1)) {
-            game.setNextStepB(direction);
+        if (game.getPlayerA().getId().equals(user.getId())) {
+            if (game.getPlayerA().getBotId().equals(-1)) {
+                game.setNextStepA(direction);
+            }
+        } else if (game.getPlayerB().getId().equals(user.getId())) {
+            if (game.getPlayerB().getBotId().equals(-1)) {
+                game.setNextStepB(direction);
+            }
         }
     }
 

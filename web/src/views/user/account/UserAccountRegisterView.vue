@@ -32,7 +32,7 @@
                     </div>
                     <div class="error-message">{{ error_message }}</div>
                     <button type="submit"
-                            class="btn btn-primary">提交</button>
+                            class="btn btn-primary">注&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;册</button>
                 </form>
             </div>
         </div>

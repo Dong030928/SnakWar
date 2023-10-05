@@ -7,6 +7,16 @@
                 King of Bots
             </router-link>
 
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarText"
+                    aria-controls="navbarText"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
             <div class="collapse navbar-collapse"
                  id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -18,10 +28,6 @@
                     <li class="nav-item">
                         <router-link :class="routeName == 'record_index' ? 'nav-link active' : 'nav-link'"
                                      :to="{name: 'record_index'}">对局列表</router-link>
-                    </li>
-                    <li class="nav-item">
-                        <img src="@/assets/images/主页.png"
-                             width="50px">
                     </li>
                     <li class="nav-item">
                         <router-link :class="routeName == 'ranklist_index' ? 'nav-link active' : 'nav-link'"

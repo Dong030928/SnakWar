@@ -24,8 +24,8 @@ import java.util.Random;
 public class WebServiceImpl implements WebService {
     private static final String appId = "6039";
     private static final String appSecret = "d0202de1b7af4ac3b10da8cbb7437125";
-    private static final String redirectUri = "https://app6039.acapp.acwing.com.cn/user/account/third_party/web/receive_code";     // 回调链接，第三方服务器接收到用户确认授权后告诉 app 端的接口地址
-    private static final String applyAccessTokenURL = "https://www.acwing.com/third_party/api/oauth2/access_token/";
+    private static final String redirectUri = "https://app6039.acapp.acwing.com.cn/user/account/acwing/web/receive_code";     // 回调链接，第三方服务器接收到用户确认授权后告诉 app 端的接口地址
+    private static final String applyAccessTokenURL = "https://www.acwing.com/third_party/api/oauth2/access_token/";    // 申请授权令牌的路径
     private static final String applyUserInfoURL = "https://www.acwing.com/third_party/api/meta/identity/getinfo/";
     private static final Random random = new Random();
 
@@ -39,20 +39,24 @@ public class WebServiceImpl implements WebService {
     public JSONObject applyCode() {
         // 第一步 请求授权码
         JSONObject resp = new JSONObject();
-        resp.put("appid", appId);
-        resp.put("redirect_uri", URLEncoder.encode(redirectUri, StandardCharsets.UTF_8));
-        resp.put("scope", "userinfo");
+
+        String encodeUrl = URLEncoder.encode(redirectUri, StandardCharsets.UTF_8);
 
         StringBuilder state = new StringBuilder();
         for (int i = 0; i < 10; i ++ ) {
             state.append((char)(random.nextInt(10) + '0'));
         }
-        resp.put("state", state.toString());
-
-        // 将 state 存到 redis 中，并设置 10min 的有效期
         redisTemplate.opsForValue().set(state.toString(), "true");
         redisTemplate.expire(state.toString(), Duration.ofMinutes(10));
 
+        // 用户同意授权后会重定向到 redirect_uri，返回参数为 code 和 state
+        String applyCodeUrl = "https://www.acwing.com/third_party/api/oauth2/web/authorize/"
+                + "?appid=" + appId
+                + "&redirect_uri=" + encodeUrl
+                + "&scope=userinfo"
+                + "&state=" + state;
+
+        resp.put("apply_code_url", applyCodeUrl);
         resp.put("result", "success");
 
         return resp;

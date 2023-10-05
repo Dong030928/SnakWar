@@ -7,6 +7,7 @@ import UserBotIndexView from '@/views/user/bots/UserBotIndexView'
 import NotFound from '@/views/error/NotFound'
 import UserAccountLoginView from '@/views/user/account/UserAccountLoginView'
 import UserAccountRegisterView from '@/views/user/account/UserAccountRegisterView'
+import UserAccountAcWingReceiveCode from '@/views/user/account/UserAccountAcWingReceiveCode'
 import store from '@/store/index'
 
 const routes = [
@@ -56,6 +57,14 @@ const routes = [
         component: UserBotIndexView,
         meta: {
             requestAuth: true,
+        },
+    },
+    {
+        path: '/user/account/acwing/receive_code',  // 此处的路由名称必须和后端设置的回调前端路径一致
+        name: 'user_account_acwing_receive_code',
+        component: UserAccountAcWingReceiveCode,
+        meta: {
+            requestAuth: false,
         },
     },
     {
