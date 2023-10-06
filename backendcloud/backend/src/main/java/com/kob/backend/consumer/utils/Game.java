@@ -123,7 +123,7 @@ public class Game extends Thread {
                 int c = random.nextInt(this.cols);
 
                 // 中心对称
-                if (g[r][c] == 1 || g[this.rows - 1 - r][this.cols - 1 - r] == 1) continue;
+                if (g[r][c] == 1 || g[this.rows - 1 - r][this.cols - 1 - c] == 1) continue;
                 if ((r == this.rows - 2 && c == 1) || (c == this.cols - 2 && r == 1)) continue;
 
                 g[r][c] = g[this.rows - 1 - r][this.cols - 1 - c] = 1;
@@ -178,7 +178,7 @@ public class Game extends Thread {
     // 等待玩家下一步操作
     public boolean nextStep() {
         try {
-            Thread.sleep(200);  // 先沉睡走一步需要的最小时间，避免重复操作覆盖
+            Thread.sleep(500);  // 先沉睡走一步需要的最小时间，避免重复操作覆盖
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
