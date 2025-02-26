@@ -12,7 +12,8 @@ const route = useRoute();
 const store = useStore();
 
 $.ajax({
-    url: "https://app6039.acapp.acwing.com.cn/api/user/account/third_party/web/receive_code",
+    // url: "https://app6039.acapp.acwing.com.cn/api/user/account/third_party/web/receive_code",
+    url: "http://127.0.0.1:3000/api/user/account/third_party/web/receive_code",
     type: "GET",
     data: {
         code: route.query.code,

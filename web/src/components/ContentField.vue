@@ -1,5 +1,4 @@
-// 白框组件
-
+ <!-- 白框组件 -->
 <template>
     <div class="container content-field">
         <div class="card">
