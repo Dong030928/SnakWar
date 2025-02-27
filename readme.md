@@ -7,10 +7,10 @@
 
 **技术栈：**
 
-后端：Spring Boot、Spring Security、MyBatis Plus、Redis、JWT、Lombok
-前端：Vue3、Vue Router、Vuex
-数据库：MySQL
-其他：WebSocket 
+后端：Spring Boot、Spring Security、MyBatis Plus、Redis、JWT、Lombok，
+前端：Vue3、Vue Router、Vuex，
+数据库：MySQL，
+其他：WebSocket   
 
 **项目亮点：**
 - 游戏地图在每局对战前动态生成，使用Flood Fill算法保证地图连通，确保每场比赛的独特性和挑战性
