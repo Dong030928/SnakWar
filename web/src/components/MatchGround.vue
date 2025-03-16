@@ -93,7 +93,7 @@ let handleMatch = () => {
 
 const refreshBots = () => {
     $.ajax({
-        // url: "https://app6039.acapp.acwing.com.cn/api/user/bot/getlist/",
+        // url: "https://cloudwebsite/api/user/bot/getlist/",
         url: "http://127.0.0.1:3000/api/user/bot/getlist/",
         type: "GET",
         headers: {

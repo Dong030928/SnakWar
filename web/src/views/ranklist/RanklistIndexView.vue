@@ -85,7 +85,7 @@ let changePage = (page) => {
 let pullPage = (page) => {
     currentPage = page
     $.ajax({
-        // url: "https://app6039.acapp.acwing.com.cn/api/rank/get/list",
+        // url: "https://cloudwebsite/api/rank/get/list",
         url: "http://127.0.0.1:3000/api/rank/get/list",
         type: "GET",
         data: {

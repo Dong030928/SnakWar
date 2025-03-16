@@ -1,0 +1,47 @@
+package com.snake_war.backend.service.impl.ranklist;
+
+import com.alibaba.fastjson2.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.snake_war.backend.mapper.UserMapper;
+import com.snake_war.backend.pojo.User;
+import com.snake_war.backend.service.ranklist.GetRankListService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.LinkedList;
+import java.util.List;
+
+@Service
+public class GetRankListServiceImpl implements GetRankListService {
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Override
+    public JSONObject getList(Integer page) {
+        IPage<User> userIPage = new Page<>(page, 10);
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.orderByDesc("rating");
+        List<User> users = userMapper.selectPage(userIPage, userQueryWrapper).getRecords();
+
+        JSONObject resp = new JSONObject();
+        List<JSONObject> items = new LinkedList<>();
+
+        for (User user: users) {
+            JSONObject item = new JSONObject();
+
+            item.put("username", user.getUsername());
+            item.put("photo", user.getPhoto());
+            item.put("rating", user.getRating());
+
+            items.add(item);
+        }
+
+        resp.put("users", items);
+        resp.put("users_count", userMapper.selectCount(null));
+
+        return resp;
+    }
+}

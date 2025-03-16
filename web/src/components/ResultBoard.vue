@@ -2,19 +2,19 @@
     <div :class="isDraw ? 'result-board result-board-bg-draw' : 'result-board result-board-bg'">
         <div class="text"
              v-if="isDraw">
-            DRAW!<p style="font-size: 20px">(天梯积分+0)</p>
+            DRAW!<p style="font-size: 20px">(天梯积分+{{ deltaScore }})</p>
         </div>
         <div class="text"
              v-else-if="isALose">
-            LOSE!<p style="font-size: 20px">(天梯积分-2)</p>
+            LOSE!<p style="font-size: 20px">(天梯积分-{{ deltaScore }})</p>
         </div>
         <div class="text"
              v-else-if="isBLose">
-            LOSE!<p style="font-size: 20px">(天梯积分-2)</p>
+            LOSE!<p style="font-size: 20px">(天梯积分-{{ deltaScore }})</p>
         </div>
         <div class="text"
              v-else>
-            WIN!<p style="font-size: 20px">(天梯积分+5)</p>
+            WIN!<p style="font-size: 20px">(天梯积分+{{ deltaScore }})</p>
         </div>
         <div class="result-board-btn">
             <button type="button"
@@ -36,6 +36,10 @@ let isDraw = ref(store.state.pk.loser === 'all')
 let isALose = ref(store.state.pk.loser === 'A' && store.state.pk.a_id === parseInt(store.state.user.id))
 let isBLose = ref(store.state.pk.loser === 'B' && store.state.pk.b_id === parseInt(store.state.user.id))
 
+let initScore = (Number)(store.state.user.rating);
+let deltaScore = ref(0);
+
+
 const restart = () => {
     store.commit("updateStatus", "matching")
     store.commit("updateLoser", "none")
@@ -48,7 +52,7 @@ const restart = () => {
 
 const updateUserRating = () => {
     $.ajax({
-        // url: "https://app6039.acapp.acwing.com.cn/api/user/account/info/",
+        // url: "https://cloudwebsite/api/user/account/info/",
         url: "http://127.0.0.1:3000/api/user/account/info/",
         type: "GET",
         headers: {
@@ -56,6 +60,8 @@ const updateUserRating = () => {
         },
         success (resp) {
             store.state.user.rating = resp.rating;
+            let endScore = (Number)(resp.rating);
+            deltaScore.value = Math.abs(initScore - endScore)
             console.log(resp);
         }
     });

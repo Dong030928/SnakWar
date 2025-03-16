@@ -263,7 +263,7 @@ export default {
 
         const refresh_bots = () => {
             $.ajax({
-                // url: "https://app6039.acapp.acwing.com.cn/api/user/bot/getlist/",
+                // url: "https://cloudwebsite/api/user/bot/getlist/",
                 url: "http://127.0.0.1:3000/api/user/bot/getlist/",
                 type: "GET",
                 headers: {
@@ -281,7 +281,7 @@ export default {
         const add_bot = () => {
             botadd.error_message = "";
             $.ajax({
-                // url: "https://app6039.acapp.acwing.com.cn/api/user/bot/add",
+                // url: "https://cloudwebsite/api/user/bot/add",
                 url: "http://127.0.0.1:3000/api/user/bot/add",
                 type: "POST",
                 data: {
@@ -309,7 +309,7 @@ export default {
         const update_bot = (bot) => {
             botadd.error_message = "";
             $.ajax({
-                // url: "https://app6039.acapp.acwing.com.cn/api/user/bot/update/",
+                // url: "https://cloudwebsite/api/user/bot/update/",
                 url: "http://127.0.0.1:3000/api/user/bot/update/",
                 type: "post",
                 data: {
@@ -334,7 +334,7 @@ export default {
 
         const remove_bot = (bot) => {
             $.ajax({
-                // url: "https://app6039.acapp.acwing.com.cn/api/user/bot/remove/",
+                // url: "https://cloudwebsite/api/user/bot/remove/",
                 url: "http://127.0.0.1:3000/api/user/bot/remove/",
                 type: "post",
                 data: {

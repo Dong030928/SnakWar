@@ -59,7 +59,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <!--这里写上main方法所在类的路径-->
                 <configuration>
-                    <mainClass>com.kob.botrunningsystem.BotRunningSystemApplication</mainClass>
+                    <mainClass>com.snake_war.botrunningsystem.BotRunningSystemApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

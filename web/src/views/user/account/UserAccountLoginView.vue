@@ -25,7 +25,7 @@
                     <button type="submit"
                             class="btn btn-primary">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</button>
 
-                    <div class="divider">
+                    <!-- <div class="divider">
                         <div class="text">
                             <span style="">其他方式登录</span>
                         </div>
@@ -42,7 +42,7 @@
                             <img src="@/assets/images/qq_logo.png"
                                  title="QQ一键登录">
                         </div>
-                    </div>
+                    </div> -->
                 </form>
 
             </div>
@@ -55,7 +55,7 @@ import ContentField from '../../../components/ContentField.vue'
 import { useStore } from 'vuex'
 import { ref } from 'vue'
 import router from '../../../router/index'
-import $ from 'jquery'
+// import $ from 'jquery'
 
 const store = useStore();
 let username = ref('');
@@ -97,34 +97,34 @@ const login = () => {
     })
 }
 
-const AcWingLogin = () => {
-    $.ajax({
-        url: "https://app6039.acapp.acwing.com.cn/api/user/account/third_party/web/apply_code",
-        type: "GET",
-        success (resp) {
-            if (resp.result === "success") {
-                window.location.replace(resp.apply_code_url);
-            }
-        },
-        error (resp) {
-            console.log(resp);
-        }
-    })
-}
+// const AcWingLogin = () => {
+//     $.ajax({
+//         url: "https://cloudwebsite/api/user/account/third_party/web/apply_code",
+//         type: "GET",
+//         success (resp) {
+//             if (resp.result === "success") {
+//                 window.location.replace(resp.apply_code_url);
+//             }
+//         },
+//         error (resp) {
+//             console.log(resp);
+//         }
+//     })
+// }
 
-const QQLogin = () => {
-    console.log(1);
-    $.ajax({
-        url: "https://app6039.acapp.acwing.com.cn/api/user/account/third_party/web/apply_code",
-        type: "GET",
-        success (resp) {
-            console.log(resp.apply_code_url)
-        },
-        error (resp) {
-            console.log(resp);
-        }
-    })
-}
+// const QQLogin = () => {
+//     console.log(1);
+//     $.ajax({
+//         url: "https://cloudwebsite/api/user/account/third_party/web/apply_code",
+//         type: "GET",
+//         success (resp) {
+//             console.log(resp.apply_code_url)
+//         },
+//         error (resp) {
+//             console.log(resp);
+//         }
+//     })
+// }
 
 </script>
 
