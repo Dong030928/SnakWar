@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
+  <title id="title">SnakWar system architecture</title>
+  <desc id="desc">Vue client communicates with the main Spring Boot service through HTTP and WebSocket. The main service coordinates matching and bot running services and stores data in MySQL and Redis.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#ecfdf5"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#0f172a" flood-opacity=".14"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10Z" fill="#475569"/>
+    </marker>
+    <style>
+      .title{font:700 30px -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;fill:#0f172a}
+      .subtitle{font:400 15px -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;fill:#64748b}
+      .boxTitle{font:700 18px -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;fill:#0f172a}
+      .boxTitleLight{font:700 19px -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;fill:#fff}
+      .boxText{font:400 13px -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;fill:#475569}
+      .boxTextLight{font:400 13px -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;fill:#e2e8f0}
+      .label{font:600 12px -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;fill:#475569}
+      .line{stroke:#475569;stroke-width:2;fill:none;marker-end:url(#arrow)}
+      .both{stroke:#64748b;stroke-width:2;fill:none;marker-start:url(#arrow);marker-end:url(#arrow)}
+    </style>
+  </defs>
+
+  <rect width="1200" height="650" rx="24" fill="url(#bg)"/>
+  <text x="58" y="57" class="title">SnakWar 系统架构</text>
+  <text x="58" y="84" class="subtitle">实时对战、动态匹配与用户 Bot 执行相互解耦</text>
+
+  <g filter="url(#shadow)">
+    <rect x="55" y="190" width="225" height="145" rx="18" fill="#166534"/>
+    <text x="167.5" y="229" text-anchor="middle" class="boxTitleLight">Vue 3 客户端</text>
+    <text x="167.5" y="260" text-anchor="middle" class="boxTextLight">登录 · 匹配 · 对战 · 排行榜</text>
+    <text x="167.5" y="285" text-anchor="middle" class="boxTextLight">Bot 编辑 · 战绩 · 对局回放</text>
+    <text x="167.5" y="311" text-anchor="middle" class="boxTextLight">Vuex · Canvas · WebSocket</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="390" y="155" width="275" height="215" rx="20" fill="#fff" stroke="#22c55e" stroke-width="2.5"/>
+    <text x="527.5" y="198" text-anchor="middle" class="boxTitle">主服务 Backend</text>
+    <text x="527.5" y="227" text-anchor="middle" class="boxText">Spring Security + JWT</text>
+    <text x="527.5" y="252" text-anchor="middle" class="boxText">REST API + WebSocket</text>
+    <text x="527.5" y="277" text-anchor="middle" class="boxText">13 × 14 地图与游戏判定</text>
+    <text x="527.5" y="302" text-anchor="middle" class="boxText">Elo 积分 · 记录持久化</text>
+    <text x="527.5" y="337" text-anchor="middle" class="boxText">端口 :3000</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="790" y="120" width="300" height="120" rx="18" fill="#fff" stroke="#f59e0b" stroke-width="2.5"/>
+    <text x="940" y="162" text-anchor="middle" class="boxTitle">匹配服务</text>
+    <text x="940" y="190" text-anchor="middle" class="boxText">按积分差和等待时间动态扩展范围</text>
+    <text x="940" y="216" text-anchor="middle" class="boxText">端口 :3001</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="790" y="285" width="300" height="135" rx="18" fill="#fff" stroke="#8b5cf6" stroke-width="2.5"/>
+    <text x="940" y="327" text-anchor="middle" class="boxTitle">Bot 运行服务</text>
+    <text x="940" y="356" text-anchor="middle" class="boxText">jOOR 动态编译 Java Bot</text>
+    <text x="940" y="381" text-anchor="middle" class="boxText">线程池执行并回传下一步方向</text>
+    <text x="940" y="405" text-anchor="middle" class="boxText">端口 :3002</text>
+  </g>
+
+  <path class="line" d="M280 228H390"/>
+  <text x="335" y="215" text-anchor="middle" class="label">HTTP / JWT</text>
+  <path class="both" d="M280 298H390"/>
+  <text x="335" y="286" text-anchor="middle" class="label">WebSocket</text>
+  <path class="both" d="M665 205H790"/>
+  <text x="727" y="192" text-anchor="middle" class="label">加入/退出匹配 · 开局</text>
+  <path class="both" d="M665 332H790"/>
+  <text x="727" y="319" text-anchor="middle" class="label">局面 · Bot 方向</text>
+
+  <g filter="url(#shadow)">
+    <rect x="260" y="500" width="680" height="105" rx="18" fill="#0f172a"/>
+    <text x="302" y="535" class="boxTitleLight">数据与状态</text>
+    <rect x="302" y="553" width="205" height="34" rx="9" fill="#1e293b" stroke="#64748b"/>
+    <text x="404.5" y="575" text-anchor="middle" class="boxTextLight">MySQL 8 · 用户/Bot/对局</text>
+    <rect x="535" y="553" width="165" height="34" rx="9" fill="#1e293b" stroke="#64748b"/>
+    <text x="617.5" y="575" text-anchor="middle" class="boxTextLight">Redis · 缓存状态</text>
+    <rect x="728" y="553" width="170" height="34" rx="9" fill="#1e293b" stroke="#64748b"/>
+    <text x="813" y="575" text-anchor="middle" class="boxTextLight">snake_war.sql</text>
+  </g>
+
+  <path class="line" d="M527 370V500"/>
+</svg>
+
